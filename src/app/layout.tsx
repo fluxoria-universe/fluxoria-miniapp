@@ -40,7 +40,7 @@ export default function RootLayout({
         }}
       >
         <Provider>
-          <TopNavbar />
+          {/* <TopNavbar /> */}
           {children}
           <BottomNavbar />
         </Provider>
