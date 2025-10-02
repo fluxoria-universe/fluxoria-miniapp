@@ -1,0 +1,2 @@
+# fluxoria-miniapp
+Frontend Miniapp
