@@ -2,7 +2,6 @@ import type { Metadata } from "next";
 import { Provider } from "./provider";
 import { minikitConfig } from "../../minikit.config";
 import "./globals.css";
-import TopNavbar from "@/components/top-navbar";
 import BottomNavbar from "@/components/bottom-navbar";
 
 export async function generateMetadata(): Promise<Metadata> {
@@ -40,7 +39,6 @@ export default function RootLayout({
         }}
       >
         <Provider>
-          {/* <TopNavbar /> */}
           {children}
           <BottomNavbar />
         </Provider>

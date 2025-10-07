@@ -37,7 +37,7 @@ export default function BottomNavbar() {
           </div>
         )}
 
-        {bottomNavigation.map((item, index) => {
+        {bottomNavigation.map((item) => {
           const Icon = item.icon;
           const href =
             item.label === "Home" ? "/" : `/${item.label.toLowerCase()}`;

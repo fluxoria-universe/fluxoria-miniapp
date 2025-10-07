@@ -3,7 +3,6 @@
 import { Input } from "@/components/ui/input";
 import { Clock, Search, TrendingUp } from "lucide-react";
 import { useMemo, useState } from "react";
-import { dummyMarkets } from "@/hooks/use-market-data";
 
 interface NewsItem {
   id: string;
