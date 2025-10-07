@@ -1,81 +1,43 @@
 "use client";
 
-import { Home, Search, Wallet, Trophy } from "lucide-react";
+import { Home, Wallet, Trophy, Newspaper } from "lucide-react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { useEffect, useState } from "react";
 
 export default function BottomNavbar() {
   const pathname = usePathname();
 
   const bottomNavigation = [
     { icon: Home, label: "Home" },
-    // { icon: Search, label: "Search" },
+    { icon: Newspaper, label: "News" },
     { icon: Trophy, label: "Leaderboard" },
     { icon: Wallet, label: "Wallet" },
   ];
 
-  const [isVisible, setIsVisible] = useState(true);
-  const [lastScrollY, setLastScrollY] = useState(0);
-  const [isScrolling, setIsScrolling] = useState(false);
-  let scrollTimeout: NodeJS.Timeout | null = null;
+  const activeIndex = bottomNavigation.findIndex((item) => {
+    const href = item.label === "Home" ? "/" : `/${item.label.toLowerCase()}`;
+    return pathname === href;
+  });
 
-  const handleScroll = () => {
-    // 1. Clear the previous timeout to reset the 2s timer
-    if (scrollTimeout) {
-      clearTimeout(scrollTimeout);
-    }
-
-    // Set the scrolling state to true, which can trigger the hide animation
-    setIsScrolling(true);
-
-    // 2. Set a new timeout to run after 2000ms (2 seconds) of no scrolling
-    scrollTimeout = setTimeout(() => {
-      setIsScrolling(false);
-    }, 2000);
-
-    const currentScrollY = window.scrollY;
-
-    // 3. Logic to hide on scroll down
-    if (currentScrollY > lastScrollY && currentScrollY > 100) {
-      setIsVisible(false);
-    }
-    // 4. Logic to show on scroll up
-    else {
-      setIsVisible(true);
-    }
-    setLastScrollY(currentScrollY);
-  };
-
-  useEffect(() => {
-    // Add the scroll event listener when the component mounts
-    window.addEventListener("scroll", handleScroll);
-
-    // This effect runs whenever isScrolling changes
-    // 5. If scrolling stops (isScrolling becomes false), show the navbar
-    if (!isScrolling) {
-      setIsVisible(true);
-    }
-
-    // Cleanup function:
-    // - Remove the event listener to prevent memory leaks
-    // - Clear any remaining timeout when the component unmounts
-    return () => {
-      window.removeEventListener("scroll", handleScroll);
-      if (scrollTimeout) {
-        clearTimeout(scrollTimeout);
-      }
-    };
-  }, [lastScrollY, isScrolling]);
+  const positions = ["15%", "38.5%", "61%", "84%"];
 
   return (
-    <div
-      className={`w-full fixed bottom-0 p-6 left-0 right-0 flex justify-center z-50 transition-transform duration-300 ${
-        isVisible ? "translate-y-0" : "translate-y-full"
-      }`}
-    >
-      <div className="w-fit flex gap-8 bg-white/20 backdrop-blur-sm rounded-full border border-white/30 shadow-lg p-2">
-        {bottomNavigation.map((item) => {
+    <div className="w-full fixed bottom-0 left-0 right-0 flex justify-center z-50 pb-6 px-6">
+      <div className="w-full max-w-md flex justify-around bg-white rounded-3xl shadow-2xl p-4 relative">
+        {activeIndex !== -1 && (
+          <div
+            className="absolute top-0 w-12 transition-all duration-300 ease-out"
+            style={{
+              left: positions[activeIndex],
+              transform: "translateX(-50%)",
+            }}
+          >
+            <div className="h-1 bg-orange-500 rounded-full" />
+            <div className="h-12 bg-gradient-to-b from-orange-300/50 to-transparent"></div>
+          </div>
+        )}
+
+        {bottomNavigation.map((item, index) => {
           const Icon = item.icon;
           const href =
             item.label === "Home" ? "/" : `/${item.label.toLowerCase()}`;
@@ -85,10 +47,15 @@ export default function BottomNavbar() {
             <Link
               href={href}
               key={item.label}
-              className={`text-white font-semibold p-2 rounded-full transition-all duration-300
-                ${isActive ? "bg-primary" : "bg-muted-foreground"}`}
+              className="flex flex-col items-center gap-2 relative z-10"
             >
-              <Icon size={24} />
+              <Icon
+                size={24}
+                className={`transition-colors duration-300 ${
+                  isActive ? "text-orange-500" : "text-gray-400"
+                }`}
+                strokeWidth={isActive ? 2.5 : 2}
+              />
             </Link>
           );
         })}
