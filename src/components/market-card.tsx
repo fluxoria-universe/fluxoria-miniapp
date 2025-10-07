@@ -43,7 +43,7 @@ const MarketCard = ({
   return (
     <div
       onClick={onClick}
-      className="bg-card border border-border rounded-lg p-4 cursor-pointer hover:border-primary transition-all duration-200 hover:shadow-lg"
+      className="border border-slate-200 rounded-xl p-5 cursor-pointer transition-all duration-200"
     >
       {/* Category Badge */}
       <div className="flex items-center justify-between mb-3">
@@ -57,7 +57,7 @@ const MarketCard = ({
       </div>
 
       {/* Question */}
-      <h3 className="text-card-foreground font-medium text-sm mb-4 line-clamp-2 leading-snug">
+      <h3 className="text-lg font-bold text-gray-900 leading-tight">
         {market.question}
       </h3>
 
@@ -65,7 +65,7 @@ const MarketCard = ({
       <div className="mb-3">
         <div className="flex justify-between items-center mb-2">
           <div className="flex items-center gap-2">
-            <span className="text-card-foreground font-semibold text-lg">
+            <span className="text-gray-400 font-semibold text-lg">
               Yes
             </span>
             <span className={`font-bold text-xl ${getColorClass()}`}>
@@ -96,7 +96,7 @@ const MarketCard = ({
         <span className="text-muted-foreground text-xs">Volume</span>
         <div className="flex items-center gap-1">
           <TrendingUp className="w-3 h-3 text-primary" />
-          <span className="text-card-foreground text-sm font-semibold">
+          <span className="text-gray-400 text-sm font-semibold">
             {formatVolume(market.volume)}
           </span>
         </div>
