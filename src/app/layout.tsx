@@ -8,10 +8,15 @@ export async function generateMetadata(): Promise<Metadata> {
   return {
     title: minikitConfig.miniapp.name,
     description: minikitConfig.miniapp.description,
+    icons: {
+      icon: [{ url: "/icon.png" }],
+      shortcut: ["/icon.png"],
+      apple: [{ url: "/icon.png" }],
+    },
     other: {
       "fc:miniapp": JSON.stringify({
         version: minikitConfig.miniapp.version,
-        imageUrl: minikitConfig.miniapp.heroImageUrl,
+        imageUrl: minikitConfig.miniapp.iconUrl,
         button: {
           title: `Launch ${minikitConfig.miniapp.name}`,
           action: {
