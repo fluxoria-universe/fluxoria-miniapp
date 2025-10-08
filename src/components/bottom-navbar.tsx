@@ -22,8 +22,8 @@ export default function BottomNavbar() {
   const positions = ["15%", "38.5%", "61%", "84%"];
 
   return (
-    <div className="w-full fixed bottom-0 left-0 right-0 flex justify-center z-50 pb-6 px-6">
-      <div className="w-full max-w-md flex justify-around bg-white rounded-3xl shadow-2xl p-4 relative">
+    <div className="w-full fixed bottom-0 left-0 right-0 flex justify-center z-50 pb-4 px-4">
+      <div className="w-full flex justify-around bg-white rounded-2xl shadow-2xl p-4 relative">
         {activeIndex !== -1 && (
           <div
             className="absolute top-0 w-12 transition-all duration-300 ease-out"
@@ -32,8 +32,8 @@ export default function BottomNavbar() {
               transform: "translateX(-50%)",
             }}
           >
-            <div className="h-1 bg-orange-500 rounded-full" />
-            <div className="h-12 bg-gradient-to-b from-orange-300/50 to-transparent"></div>
+            <div className="h-1 bg-orange-500 rounded-b-xl" />
+            <div className="h-8 mx-[1px] bg-gradient-to-b from-orange-300/50 to-transparent"></div>
           </div>
         )}
 
