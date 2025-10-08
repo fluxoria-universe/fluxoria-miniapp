@@ -1,7 +1,6 @@
-const ROOT_URL =
-  process.env.NEXT_PUBLIC_URL ||
-  (process.env.VERCEL_URL && `https://${process.env.VERCEL_URL}`) ||
-  "http://localhost:3000";
+const ROOT_URL = process.env.NEXT_PUBLIC_URL
+  ? `https://${process.env.NEXT_PUBLIC_URL}`
+  : "http://localhost:3000";
 
 /**
  * MiniApp configuration object. Must follow the mini app manifest specification.
@@ -19,21 +18,22 @@ export const minikitConfig = {
   },
   miniapp: {
     version: "1",
-    name: "polymarket-miniapp-base-2",
-    subtitle: "",
-    description: "",
-    screenshotUrls: [],
-    iconUrl: `${ROOT_URL}/icon.png`,
-    splashImageUrl: `${ROOT_URL}/splash.png`,
-    splashBackgroundColor: "#000000",
+    name: "Fluxoria",
     homeUrl: ROOT_URL,
-    webhookUrl: `${ROOT_URL}/api/webhook`,
-    primaryCategory: "utility",
-    tags: ["example"],
+    iconUrl: `${ROOT_URL}/icon.png`,
+    splashImageUrl: `${ROOT_URL}/logo.png`,
+    splashBackgroundColor: "#000000",
+    primaryCategory: "finance",
+    tags: ["prediction", "market", "finance", "gambling", "games"],
+    noIndex: true,
+    subtitle: "Leverage bets",
+    description: "Prediction market with option to leverage bets.",
+    tagline: "Fluxoria: Leverage your bets!",
     heroImageUrl: `${ROOT_URL}/hero.png`,
-    tagline: "",
-    ogTitle: "",
-    ogDescription: "",
+    screenshotUrls: [],
+    webhookUrl: `${ROOT_URL}/api/webhook`,
+    ogTitle: "Fluxoria",
+    ogDescription: "Prediction market with option to leverage bets.",
     ogImageUrl: `${ROOT_URL}/hero.png`,
   },
 } as const;
