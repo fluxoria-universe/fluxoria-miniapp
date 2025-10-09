@@ -1,7 +1,8 @@
 import { defineChain } from "viem";
-import { createConfig, http } from "wagmi";
+import { createConfig, configureChains } from "wagmi";
 import { base } from "wagmi/chains";
-import { coinbaseWallet } from "wagmi/connectors";
+import { CoinbaseWalletConnector } from "wagmi/connectors/coinbaseWallet";
+import { publicProvider } from "wagmi/providers/public";
 
 export const baseSepolia = defineChain({
   id: 84532,
@@ -26,16 +27,19 @@ export const baseSepolia = defineChain({
   iconUrl: "https://avatars.githubusercontent.com/u/108554348?s=200&v=4",
 });
 
+const { chains, publicClient } = configureChains(
+  [baseSepolia, base],
+  [publicProvider()]
+);
+
 export const wagmiConfig = createConfig({
-  chains: [baseSepolia, base],
   connectors: [
-    coinbaseWallet({
-      appName: "Coba OnchainKit",
+    new CoinbaseWalletConnector({
+      chains,
+      options: {
+        appName: "Coba OnchainKit",
+      },
     }),
   ],
-  ssr: true,
-  transports: {
-    [base.id]: http(),
-    [baseSepolia.id]: http(),
-  },
+  publicClient,
 });

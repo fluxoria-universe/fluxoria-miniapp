@@ -2,7 +2,7 @@ export interface Market {
   id: string;
   question: string;
   category: string;
-  outcomes: { option: string; probability: number }[];
+  outcomes: { id: string, name: string; probability: number, color: string }[];
   volume: number;
   deadline: string;
 }

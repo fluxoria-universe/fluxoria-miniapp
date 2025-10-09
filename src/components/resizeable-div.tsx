@@ -29,37 +29,33 @@ export default function ResizableBottomSheet({
         : e.nativeEvent.clientY;
   };
 
-  // This function is now a "pure" handler for native DOM events
-  const handleNativeDragMove = (e: DragEventType) => {
-    if (!isDragging) return;
-    const currentY = "touches" in e ? e.touches[0].clientY : e.clientY;
-    const deltaY = currentY - initialYRef.current;
-    const newHeight = startHeightRef.current + deltaY;
-
-    setHeight(Math.max(100, Math.min(window.innerHeight - 50, newHeight)));
-  };
-
-  const handleNativeDragEnd = () => {
-    setIsDragging(false);
-  };
 
   useEffect(() => {
-    // Add the event listeners to the window only when dragging starts
-    if (isDragging) {
-      window.addEventListener("mousemove", handleNativeDragMove);
-      window.addEventListener("mouseup", handleNativeDragEnd);
-      window.addEventListener("touchmove", handleNativeDragMove);
-      window.addEventListener("touchend", handleNativeDragEnd);
-    }
+    if (!isDragging) return;
 
-    // Cleanup function to remove event listeners
-    return () => {
-      window.removeEventListener("mousemove", handleNativeDragMove);
-      window.removeEventListener("mouseup", handleNativeDragEnd);
-      window.removeEventListener("touchmove", handleNativeDragMove);
-      window.removeEventListener("touchend", handleNativeDragEnd);
+    const handleNativeDragMove = (e: DragEventType) => {
+      const currentY = 'touches' in e ? e.touches[0].clientY : (e as MouseEvent).clientY;
+      const deltaY = currentY - initialYRef.current;
+      const newHeight = startHeightRef.current + deltaY;
+      setHeight(Math.max(100, Math.min(window.innerHeight - 50, newHeight)));
     };
-  }, [isDragging, handleNativeDragMove, handleNativeDragEnd]);
+
+    const handleNativeDragEnd = () => {
+      setIsDragging(false);
+    };
+
+    window.addEventListener('mousemove', handleNativeDragMove);
+    window.addEventListener('mouseup', handleNativeDragEnd);
+    window.addEventListener('touchmove', handleNativeDragMove as unknown as EventListener);
+    window.addEventListener('touchend', handleNativeDragEnd);
+
+    return () => {
+      window.removeEventListener('mousemove', handleNativeDragMove);
+      window.removeEventListener('mouseup', handleNativeDragEnd);
+      window.removeEventListener('touchmove', handleNativeDragMove as unknown as EventListener);
+      window.removeEventListener('touchend', handleNativeDragEnd);
+    };
+  }, [isDragging]);
 
   const sheetClasses = clsx(
     "fixed",

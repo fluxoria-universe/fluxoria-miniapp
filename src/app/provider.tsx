@@ -1,16 +1,15 @@
 "use client";
 
 import { ReactNode } from "react";
-import { base } from "wagmi/chains";
-import { OnchainKitProvider } from "@coinbase/onchainkit";
+// import { base } from "wagmi/chains";
+// import { OnchainKitProvider } from "@coinbase/onchainkit";
 import { ThemeProvider } from "next-themes";
-import { WagmiProvider } from "wagmi";
-import { wagmiConfig } from "@/lib/wagmi";
-import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import "@coinbase/onchainkit/styles.css";
+// import { WagmiConfig } from "wagmi";
+// import { wagmiConfig } from "@/lib/wagmi";
+// import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 
 export function Provider({ children }: { children: ReactNode }) {
-  const queryClient = new QueryClient();
+  // const queryClient = new QueryClient();
 
   return (
     <ThemeProvider
@@ -19,9 +18,9 @@ export function Provider({ children }: { children: ReactNode }) {
       enableSystem
       disableTransitionOnChange
     >
-      <WagmiProvider config={wagmiConfig}>
-        <QueryClientProvider client={queryClient}>
-          <OnchainKitProvider
+      {/* <WagmiConfig config={wagmiConfig}>
+        <QueryClientProvider client={queryClient}> */}
+      {/* <OnchainKitProvider
             apiKey={process.env.NEXT_PUBLIC_ONCHAINKIT_API_KEY}
             chain={base}
             config={{
@@ -34,10 +33,10 @@ export function Provider({ children }: { children: ReactNode }) {
               },
             }}
           >
-            {children}
-          </OnchainKitProvider>
-        </QueryClientProvider>
-      </WagmiProvider>
+          </OnchainKitProvider> */}
+      {/* </QueryClientProvider>
+      </WagmiConfig> */}
+      {children}
     </ThemeProvider>
   );
 }
