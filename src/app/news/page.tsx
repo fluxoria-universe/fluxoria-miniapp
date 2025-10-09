@@ -309,16 +309,16 @@ export default function News() {
                     </h3>
 
                     {/* Description */}
-                    <p className="text-sm text-gray-600 leading-relaxed">
+                    {/* <p className="text-sm text-gray-600 leading-relaxed">
                       {news.description}
-                    </p>
+                    </p> */}
 
                     {/* Footer */}
-                    <div className="flex items-center justify-between pt-2 border-t border-slate-100">
+                    {/* <div className="flex items-center justify-between pt-2 border-t border-slate-100">
                       <span className="text-xs text-gray-500 font-medium">
                         Source: {news.source}
                       </span>
-                    </div>
+                    </div> */}
                   </div>
                 </div>
               ))

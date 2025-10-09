@@ -46,7 +46,7 @@ const MarketCard = ({
       className="border border-slate-200 rounded-xl p-5 cursor-pointer transition-all duration-200"
     >
       {/* Category Badge */}
-      <div className="flex items-center justify-between mb-3">
+      {/* <div className="flex items-center justify-between mb-3">
         <span className="bg-accent text-accent-foreground text-xs font-medium px-2.5 py-1 rounded-full">
           {market.category}
         </span>
@@ -54,7 +54,7 @@ const MarketCard = ({
           <Clock className="w-3 h-3" />
           {formatDeadline(market.deadline)}
         </span>
-      </div>
+      </div> */}
 
       {/* Question */}
       <h3 className="text-lg font-bold text-gray-900 leading-tight">

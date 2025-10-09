@@ -1,11 +1,12 @@
 import CardNews from "@/components/card-news";
+import Image from "next/image";
 
 export default function Home() {
   return (
-    <div className="w-full h-screen bg-gradient-to-b from-orange-400 to-white">
+    <div className="w-full h-screen bg-gradient-to-r from-orange-500 to-orange-400">
       <div className="w-full flex flex-col gap-2 p-8 text-white">
-        <strong className="text-3xl font-bold">Fluxoria</strong>
-        <span className="font-semibold">Welcome to fluxoria, lets leverage your bets.</span>
+        <Image src={'/logo.png'} alt="Fluxoria" width={256} height={45} />
+        <span className="font-semibold">Lets leverage your bets.</span>
       </div>
       <CardNews />
     </div>
