@@ -1,5 +1,5 @@
 import { Market } from "@/types/market.types";
-import { Clock, TrendingUp } from "lucide-react";
+import { TrendingUp } from "lucide-react";
 
 const MarketCard = ({
   market,
@@ -19,19 +19,19 @@ const MarketCard = ({
     return `$${vol}`;
   };
 
-  const formatDeadline = (deadline: string) => {
-    const date = new Date(deadline);
-    const now = new Date();
-    const diffTime = date.getTime() - now.getTime();
-    const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+  // const formatDeadline = (deadline: string) => {
+  //   const date = new Date(deadline);
+  //   const now = new Date();
+  //   const diffTime = date.getTime() - now.getTime();
+  //   const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
 
-    if (diffDays < 0) return "Ended";
-    if (diffDays === 0) return "Today";
-    if (diffDays === 1) return "1 day";
-    if (diffDays < 30) return `${diffDays} days`;
-    if (diffDays < 365) return `${Math.round(diffDays / 30)} months`;
-    return `${Math.round(diffDays / 365)} years`;
-  };
+  //   if (diffDays < 0) return "Ended";
+  //   if (diffDays === 0) return "Today";
+  //   if (diffDays === 1) return "1 day";
+  //   if (diffDays < 30) return `${diffDays} days`;
+  //   if (diffDays < 365) return `${Math.round(diffDays / 30)} months`;
+  //   return `${Math.round(diffDays / 365)} years`;
+  // };
 
   // Determine color based on probability
   const getColorClass = () => {
