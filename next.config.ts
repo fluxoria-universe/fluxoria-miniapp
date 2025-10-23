@@ -5,6 +5,11 @@ const nextConfig: NextConfig = {
     config.externals.push("pino-pretty", "lokijs", "encoding");
     return config;
   },
+  
+  // Experimental features for better handling
+  experimental: {
+    optimizePackageImports: ['@rainbow-me/rainbowkit', 'wagmi'],
+  },
 };
 
 export default nextConfig;

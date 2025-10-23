@@ -1,4 +1,4 @@
-import CardNews from "@/components/card-news";
+import TrendingSection from "@/features/home/components/TrendingSection";
 import Image from "next/image";
 
 export default function Home() {
@@ -8,7 +8,7 @@ export default function Home() {
         <Image src={'/logo.png'} alt="Fluxoria" width={256} height={45} />
         <span className="font-semibold">Lets leverage your bets.</span>
       </div>
-      <CardNews />
+      <TrendingSection />
     </div>
   )
 }
