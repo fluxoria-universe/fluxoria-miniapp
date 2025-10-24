@@ -1,0 +1,2 @@
+export const BTC100K_ADDRESS: `0x${string}` =
+  "0xB9B05AC285bc1598C20eC99cb29D214875C004e4";

@@ -9,7 +9,7 @@ import PoolForm from "./PoolForm";
 export default function WalletSection() {
   const [subTab, setSubTab] = useState<WalletSubTab>("open");
   return (
-    <div className="absolute bottom-0 h-[78%] rounded-t-4xl z-10 w-full max-w-[480px] bg-white p-4 pb-20">
+    <div className="absolute bottom-0 h-[70%] rounded-t-4xl z-10 w-full max-w-[480px] bg-white p-4 pb-20">
       <div className="w-full h-full overflow-auto scrollbar-hide rounded-2xl py-1">
         <div className="space-y-6">
           <div className="flex gap-2 bg-gray-100 rounded-full p-1">
