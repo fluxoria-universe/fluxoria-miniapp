@@ -1,7 +1,7 @@
 "use client";
 
 import { ConnectButton } from "@rainbow-me/rainbowkit";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 
 interface WalletModalProps {
   isOpen: boolean;
@@ -9,30 +9,26 @@ interface WalletModalProps {
 }
 
 export default function WalletModal({ isOpen, onClose }: WalletModalProps) {
+  const [isConnected, setIsConnected] = useState(false);
+
   // Close modal when escape key is pressed (only when connected)
   useEffect(() => {
     const handleEscape = (e: KeyboardEvent) => {
-      if (e.key === "Escape") {
-        // Only allow closing if wallet is connected
-        const isConnected = document.querySelector(
-          '[data-wallet-connected="true"]'
-        );
-        if (isConnected) {
-          onClose();
-        }
+      if (e.key === "Escape" && isConnected) {
+        onClose();
       }
     };
 
     if (isOpen) {
       document.addEventListener("keydown", handleEscape);
-      document.body.style.overflow = "hidden"; // Prevent background scrolling
+      document.body.style.overflow = "hidden";
     }
 
     return () => {
       document.removeEventListener("keydown", handleEscape);
-      document.body.style.overflow = "unset"; // Restore scrolling
+      document.body.style.overflow = "unset";
     };
-  }, [isOpen, onClose]);
+  }, [isOpen, onClose, isConnected]);
 
   if (!isOpen) return null;
 
@@ -40,13 +36,11 @@ export default function WalletModal({ isOpen, onClose }: WalletModalProps) {
     <div className="fixed inset-0 z-50 overflow-y-auto">
       <div className="fixed inset-0 bg-slate-400/50 backdrop-blur-xs" />
 
-      {/* Modal container */}
       <div className="flex min-h-full items-center justify-center p-4">
         <div
           className="relative w-full max-w-md transform overflow-hidden rounded-2xl bg-white text-left shadow-xl transition-all"
-          onClick={(e) => e.stopPropagation()} // Prevent any click propagation
+          onClick={(e) => e.stopPropagation()}
         >
-          {/* Header - no close button when not connected */}
           <div className="flex items-center justify-center border-b border-gray-100 px-6 py-4">
             <div className="flex items-center gap-3">
               <div className="h-8 w-8 rounded-full bg-orange-100 flex items-center justify-center">
@@ -71,7 +65,6 @@ export default function WalletModal({ isOpen, onClose }: WalletModalProps) {
             </div>
           </div>
 
-          {/* Body */}
           <div className="px-6 py-5">
             <div className="text-center mb-6">
               <p className="text-sm text-gray-600 mb-2">
@@ -94,13 +87,11 @@ export default function WalletModal({ isOpen, onClose }: WalletModalProps) {
               </div>
             </div>
 
-            {/* RainbowKit ConnectButton with custom styling */}
             <div className="rainbowkit-custom">
               <ConnectButton.Custom>
                 {({
                   account,
                   chain,
-                  openAccountModal,
                   openChainModal,
                   openConnectModal,
                   authenticationStatus,
@@ -114,17 +105,10 @@ export default function WalletModal({ isOpen, onClose }: WalletModalProps) {
                     (!authenticationStatus ||
                       authenticationStatus === "authenticated");
 
-                  // Update data attribute for escape key handler
-                  useEffect(() => {
-                    if (connected) {
-                      document.body.setAttribute(
-                        "data-wallet-connected",
-                        "true"
-                      );
-                    } else {
-                      document.body.removeAttribute("data-wallet-connected");
-                    }
-                  }, [connected]);
+                  // Update the connection state when it changes
+                  if (connected !== isConnected) {
+                    setIsConnected(connected || true);
+                  }
 
                   return (
                     <div
@@ -209,7 +193,6 @@ export default function WalletModal({ isOpen, onClose }: WalletModalProps) {
             </div>
           </div>
 
-          {/* Footer - updated message */}
           <div className="bg-gray-50 px-6 py-3">
             <p className="text-xs text-gray-500 text-center">
               New to crypto wallets?{" "}
