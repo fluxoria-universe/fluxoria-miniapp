@@ -14,7 +14,7 @@ export const minikitConfig = {
     signature: "kgbi0NVzf91H+nKRBpBq1z0EJrZKtqZ4Hqeuy7XGCh5SmjNQZbhQYndeKAsozeLHs1JysL6+0WlnRIf9nQfC0Bw=",
   },
   baseBuilder: {
-    allowedAddresses: [],
+    ownerAddress: "0x147199200F05F56C18f30e68AcaA422466976f07",
   },
   miniapp: {
     version: "1",
@@ -25,7 +25,7 @@ export const minikitConfig = {
     splashBackgroundColor: "#000000",
     primaryCategory: "finance",
     tags: ["prediction", "market", "finance", "gambling", "games"],
-    noIndex: true,
+    noIndex: false,
     subtitle: "Leverage bets",
     description: "Prediction market with option to leverage bets.",
     tagline: "Fluxoria: Leverage your bets!",

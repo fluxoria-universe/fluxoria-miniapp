@@ -1,7 +1,12 @@
 "use client";
 
-import { Wallet } from "lucide-react";
-import React, { useState } from "react";
+import { ExternalLink, Wallet } from "lucide-react";
+import React, { useEffect, useState } from "react";
+import { useAccount } from "wagmi";
+import { useContractBalance } from "../hooks/useBalanceOf";
+import { formatUnits } from "viem";
+import { useOpenPosition } from "../hooks/useOpenPosition";
+import { PositionSide } from "../types/spot.types";
 
 interface Market {
   id: string;
@@ -9,6 +14,30 @@ interface Market {
   yesPrice: number;
   noPrice: number;
 }
+
+const Spinner = () => (
+  <svg
+    aria-hidden="true"
+    className="w-5 h-5 text-white animate-spin"
+    xmlns="http://www.w3.org/2000/svg"
+    fill="none"
+    viewBox="0 0 24 24"
+  >
+    <circle
+      className="opacity-25"
+      cx="12"
+      cy="12"
+      r="10"
+      stroke="currentColor"
+      strokeWidth="4"
+    ></circle>
+    <path
+      className="opacity-75"
+      fill="currentColor"
+      d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+    ></path>
+  </svg>
+);
 
 const PredictionBidForm: React.FC = () => {
   const [tradeType, setTradeType] = useState<"buy" | "sell">("buy");
@@ -25,6 +54,19 @@ const PredictionBidForm: React.FC = () => {
     noPrice: 12,
   };
 
+  const { address } = useAccount();
+  const { balance } = useContractBalance({
+    account: address,
+  });
+
+  const formattedBalance = balance ? formatUnits(balance, 6) : "0";
+
+  useEffect(() => {
+    if (isConfirmed || error) {
+      reset();
+    }
+  }, [amount, tradeType, position]);
+
   const handleAmountChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value.replace(/[^0-9.]/g, "");
     setAmount(value);
@@ -37,7 +79,7 @@ const PredictionBidForm: React.FC = () => {
 
   const setMaxAmount = () => {
     // Replace with actual wallet balance
-    const maxBalance = 1000;
+    const maxBalance = formattedBalance;
     setAmount(maxBalance.toString());
   };
 
@@ -58,6 +100,34 @@ const PredictionBidForm: React.FC = () => {
         ? selectedPrice - (baseAmount / effectiveAmount) * 100
         : selectedPrice + (baseAmount / effectiveAmount) * 100
       : null;
+
+  const {
+    openPosition,
+    isLoading,
+    isConfirming,
+    isConfirmed,
+    error,
+    txHash,
+    reset,
+  } = useOpenPosition();
+
+  const handleOpenPosition = () => {
+    openPosition({
+      side: PositionSide.LONG,
+      leverage: BigInt(leverage), // 10x leverage
+      size: BigInt((Number(amount) * 10) ^ 6), // 0.1 ETH in wei (you can use parseEther from viem)
+      marketId: BigInt(0),
+      outcome: BigInt(0),
+    });
+  };
+
+  const isProcessing = isLoading || isConfirming;
+  const isDisabled = baseAmount <= 0 || isProcessing;
+
+  let buttonText =
+    tradeType === "buy" ? "Place Buy / Long Order" : "Place Sell / Short Order";
+  if (isLoading) buttonText = "Waiting for confirmation...";
+  if (isConfirming) buttonText = "Processing transaction...";
 
   return (
     <div className="w-full mt-4">
@@ -125,7 +195,7 @@ const PredictionBidForm: React.FC = () => {
             <div className="flex flex-row justify-between">
               <div className="flex flex-row gap-2 text-gray-700">
                 <Wallet />
-                <span>45</span>
+                <span>{formattedBalance}</span>
               </div>
               <label className="flex items-center gap-3 cursor-pointer group">
                 <div className="relative">
@@ -272,21 +342,54 @@ const PredictionBidForm: React.FC = () => {
 
           {/* Trade Button */}
           <button
-            disabled={baseAmount <= 0}
-            className={`w-full py-4 rounded-xl font-bold text-lg transition-all text-white ${
-              baseAmount > 0
-                ? `${
-                    tradeType === "buy" ? "bg-green-500" : "bg-red-500"
-                  } shadow-lg shadow-blue-500/30`
-                : `${
-                    tradeType === "buy" ? "bg-green-500/40" : "bg-red-500/40"
-                  } cursor-not-allowed`
+            disabled={isDisabled}
+            onClick={handleOpenPosition}
+            className={`w-full py-4 rounded-xl font-bold text-lg transition-all text-white flex items-center justify-center gap-2 ${
+              isProcessing
+                ? "bg-blue-500 cursor-wait"
+                : baseAmount > 0
+                ? tradeType === "buy"
+                  ? "bg-green-500 shadow-lg shadow-green-500/30"
+                  : "bg-red-500 shadow-lg shadow-red-500/30"
+                : tradeType === "buy"
+                ? "bg-green-500/40"
+                : "bg-red-500/40"
             }`}
           >
-            {tradeType === "buy"
-              ? "Place Buy / Long Order"
-              : "Place Sell / Short Order"}
+            {isProcessing && <Spinner />}
+            {buttonText}
           </button>
+
+          {isConfirmed && txHash && (
+            <div className="mt-4 p-3 bg-green-600/10 border border-green-800/50 rounded-lg">
+              <p className="text-green-500 text-sm leading-relaxed">
+                ✅ <strong>Transaction Confirmed!</strong> Your position has
+                been opened.
+              </p>
+              <a
+                href={`https://etherscan.io/tx/${txHash}`}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex items-center gap-1 text-green-400 text-xs mt-2 hover:underline"
+              >
+                View on Etherscan <ExternalLink size={12} />
+              </a>
+            </div>
+          )}
+
+          {error && (
+            <div className="mt-4 p-3 bg-red-600/10 border border-red-800/50 rounded-lg">
+              <p className="text-red-500 text-sm leading-relaxed">
+                ❌ <strong>Error:</strong> {error.message}
+              </p>
+              <button
+                onClick={reset}
+                className="mt-2 text-xs text-red-400 hover:underline"
+              >
+                Dismiss
+              </button>
+            </div>
+          )}
 
           {/* Warning for leverage */}
           {useLeverage && (
