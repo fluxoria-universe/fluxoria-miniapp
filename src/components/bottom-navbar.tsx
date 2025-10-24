@@ -3,9 +3,11 @@
 import { Home, Wallet, Trophy, Newspaper } from "lucide-react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { useAccount } from "wagmi";
 
 export default function BottomNavbar() {
   const pathname = usePathname();
+  const { isConnected } = useAccount();
 
   const bottomNavigation = [
     { icon: Home, label: "Home" },
@@ -22,7 +24,7 @@ export default function BottomNavbar() {
   const positions = ["15%", "38.5%", "61%", "84%"];
 
   return (
-    <div className="fixed bottom-0 left-1/2 -translate-x-1/2 w-full max-w-[480px] flex justify-center z-50 pb-4 px-4">
+    <div className={`${isConnected ? 'fixed' : 'hidden'} bottom-0 left-1/2 -translate-x-1/2 w-full max-w-[480px] flex justify-center z-50 pb-4 px-4`}>
       <div className="w-full flex justify-around bg-white rounded-2xl shadow-2xl p-4 relative">
         {activeIndex !== -1 && (
           <div

@@ -2,7 +2,6 @@
 
 import { useState } from "react";
 import { WalletSubTab } from "../types/wallet.types";
-import DepositForm from "./DepositForm";
 import OpenList from "./OpenList";
 import PoolForm from "./PoolForm";
 
@@ -14,39 +13,28 @@ export default function WalletSection() {
         <div className="space-y-6">
           <div className="flex gap-2 bg-gray-100 rounded-full p-1">
             <button
-              onClick={() => setSubTab("deposit")}
-              className={`flex-1 py-2 rounded-full text-sm font-medium transition-colors ${
-                subTab === "deposit"
-                  ? "bg-white text-gray-900 shadow-sm"
-                  : "text-gray-600"
-              }`}
-            >
-              Deposit
-            </button>
-            <button
               onClick={() => setSubTab("open")}
-              className={`flex-1 py-2 rounded-full text-sm font-medium transition-colors ${
+              className={`flex-1 py-2.5 rounded-full text-sm font-medium transition-all ${
                 subTab === "open"
-                  ? "bg-white text-gray-900 shadow-sm"
+                  ? "bg-white text-gray-900 shadow-md"
                   : "text-gray-600"
               }`}
             >
-              Open
+              Open Position
             </button>
             <button
               onClick={() => setSubTab("pool")}
-              className={`flex-1 py-2 rounded-full text-sm font-medium transition-colors ${
+              className={`flex-1 py-2.5 rounded-full text-sm font-medium transition-all ${
                 subTab === "pool"
-                  ? "bg-white text-gray-900 shadow-sm"
+                  ? "bg-white text-gray-900 shadow-md"
                   : "text-gray-600"
               }`}
             >
-              Pool
+              Create News
             </button>
           </div>
 
-          <div>
-            {subTab === "deposit" && <DepositForm />}
+          <div className="pb-4">
             {subTab === "open" && <OpenList />}
             {subTab === "pool" && <PoolForm />}
           </div>
