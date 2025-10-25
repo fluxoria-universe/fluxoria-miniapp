@@ -2,12 +2,7 @@ import { useWriteContract, useWaitForTransactionReceipt } from "wagmi";
 import { type Hash } from "viem";
 import { BTC100K_ADDRESS } from "@/contract/BTC100K";
 import { BTC100KABI } from "@/abis/BTC100KABI";
-
-// Position side enum (0 = LONG, 1 = SHORT)
-export enum PositionSide {
-  LONG = 0,
-  SHORT = 1,
-}
+import { PositionSide } from "../types/spot.types";
 
 export interface OpenPositionParams {
   side: PositionSide;
