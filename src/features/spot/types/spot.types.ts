@@ -18,8 +18,8 @@ export interface CustomTooltipProps {
 }
 
 export enum PositionSide {
-  LONG = 0,
-  SHORT = 1,
+  LONG = 1,
+  SHORT = 2,
 }
 
 export interface OpenPositionParams {
